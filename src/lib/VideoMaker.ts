@@ -1,7 +1,6 @@
 import { audioData } from '../types/interface';
 import ffmpeg from 'fluent-ffmpeg';
 import path from 'path';
-import Randomizer from './Randomizer';
 
 export default class VideoMaker {
   public imagePath: string;
@@ -52,7 +51,7 @@ export default class VideoMaker {
     });
   }
 
-  public generateStaticVideo(): Promise<void> {
+  public generateVideo(): Promise<string> {
     return new Promise(resolve => {
       this.command = ffmpeg();
 
@@ -68,17 +67,8 @@ export default class VideoMaker {
         .save(this.videoOutput)
         .on('end', () => {
           console.log('video created');
-          resolve();
+          resolve(this.videoOutput);
         });
     });
   }
 }
-
-(async () => {
-  const r = new Randomizer();
-  console.log(r.finalText);
-
-  const vm = new VideoMaker(await r.generatedImgSrc, r.generatedAudioData);
-  await vm.generateAudio();
-  await vm.generateStaticVideo();
-})();
