@@ -1,15 +1,22 @@
 import Randomizer from './lib/Randomizer';
+import Formatter from './lib/Formatter';
 import VideoMaker from './lib/VideoMaker';
 import Twitter from './lib/Twitter';
 
 (async () => {
   const r = new Randomizer();
-  const twitter = new Twitter();
-  console.log(r.finalText);
+  const generatedAudioData = r.generatedAudioData;
+  // const generatedImgSrc = await r.generatedImgSrc;
 
-  const vm = new VideoMaker(await r.generatedImgSrc, r.generatedAudioData);
-  await vm.generateAudio();
-  const filePath = await vm.generateVideo();
-  const mediaIdStr = await twitter.uploadVideo(filePath);
-  await twitter.tweetVideo(mediaIdStr, r.finalText);
+  const f = new Formatter(generatedAudioData);
+  const tweet = f.finalText;
+  console.log(tweet); 
+
+  // const vm = new VideoMaker(generatedImgSrc, generatedAudioData);
+  // await vm.generateAudio();
+  // const videoPath = await vm.generateVideo();
+
+  // const twitter = new Twitter();
+  // const mediaId = await twitter.uploadVideo(videoPath);
+  // await twitter.tweetVideo(mediaId, tweet);
 })();
