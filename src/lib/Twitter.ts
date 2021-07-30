@@ -1,14 +1,19 @@
-import { twitterUploadResponse } from './../types/interface';
+import {
+  TwitterTweetResponse,
+  twitterUploadResponse,
+} from './../types/interface';
 import Twit from 'twit';
 import dotenv from 'dotenv';
 import mime from 'mime';
 import { promises as fs } from 'fs';
+import createLogger from 'logging';
 
 dotenv.config();
 
 export default class Twitter {
   private readonly client: Twit;
   public readonly imgSrc: string;
+  private logger: createLogger.Logger;
 
   constructor() {
     this.client = new Twit({
@@ -17,6 +22,7 @@ export default class Twitter {
       access_token: process.env.TWITTER_API_ACCESS_TOKEN!,
       access_token_secret: process.env.TWITTER_API_ACCESS_SECRET!,
     });
+    this.logger = createLogger('Twitter');
   }
 
   public async uploadVideo(filepath: string): Promise<string> {
@@ -44,10 +50,10 @@ export default class Twitter {
         },
         (err, data, _) => {
           if (err) {
-            console.log(err);
+            this.logger.error('Init Media Upload Error', err);
             reject(err);
           } else {
-            console.log('INIT', data);
+            this.logger.info('Init Media Upload');
             const _data = data as twitterUploadResponse;
             resolve(_data.media_id_string);
           }
@@ -63,7 +69,6 @@ export default class Twitter {
     const mediaData = await fs.readFile(filepath, {
       encoding: 'base64',
     });
-    console.log('Append');
 
     return new Promise((resolve, reject) => {
       this.client.post(
@@ -74,12 +79,12 @@ export default class Twitter {
           media_data: mediaData,
           segment_index: 0,
         },
-        (err, data) => {
+        err => {
           if (err) {
-            console.log(err);
+            this.logger.error('Append File Error', err);
             reject(err);
           } else {
-            console.log('APPEND', data);
+            this.logger.info('Appending File Video');
             resolve(mediaIdStr);
           }
         }
@@ -95,13 +100,12 @@ export default class Twitter {
           command: 'FINALIZE',
           media_id: mediaIdStr,
         },
-        (err, data) => {
+        err => {
           if (err) {
-            console.log(err);
+            this.logger.error('Finalize Upload Error', err);
             reject(err);
           } else {
-            console.log('FINALIZE', data);
-
+            this.logger.info('Finalizing Video Upload');
             resolve(mediaIdStr);
           }
         }
@@ -113,15 +117,19 @@ export default class Twitter {
     mediaIdStr: string,
     textAudio: string
   ): Promise<void> {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
       this.client.post(
         'statuses/update',
         { status: textAudio, media_ids: [mediaIdStr] },
-        (err, data, _) => {
+        (err, data) => {
           if (err) {
+            this.logger.error('Tweeting Video Error', err);
             reject(err);
           } else {
-            console.log(data);
+            const _data = data as TwitterTweetResponse;
+            this.logger.info(
+              `Tweeting https://twitter.com/pengharunnruang/status/${_data.id_str}`
+            );
             resolve();
           }
         }

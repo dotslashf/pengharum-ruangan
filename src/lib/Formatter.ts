@@ -1,10 +1,14 @@
 import { audioData } from './../types/interface';
+import createLogger from 'logging';
+
 export default class Formatter {
   private _data: audioData[];
   public finalText: string;
+  private logger: createLogger.Logger;
 
   constructor(data: audioData[]) {
     this._data = data;
+    this.logger = createLogger('Formatter');
     this.finalText = this.flattenText();
   }
 
@@ -40,9 +44,14 @@ export default class Formatter {
       }
     }, '');
 
-    flattenText = `${flattenText}\n\n${sprayText}`;
-    console.log(flattenText.length);
+    const flattenTextSpray = `${flattenText}\n\n${sprayText}`;
 
-    return flattenText;
+    if (flattenTextSpray.length <= 280) {
+      this.logger.info('Text Flattened + Emoji');
+      return flattenTextSpray;
+    } else {
+      this.logger.info('Text Flattened');
+      return flattenText;
+    }
   }
 }

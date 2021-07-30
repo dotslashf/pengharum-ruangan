@@ -3,14 +3,17 @@ import data from '../data.json';
 import lodash from 'lodash';
 import { promises as fs } from 'fs';
 import path from 'path';
+import createLogger from 'logging';
 
 export default class Randomizer {
   private _audioData: audioData[];
   public generatedImgSrc: Promise<string>;
   private sequence: string;
+  private logger: createLogger.Logger;
 
   constructor() {
     this.generatedImgSrc = this.generateImage();
+    this.logger = createLogger('Randomizer');
     this.generateRandomSequence();
   }
 
@@ -42,6 +45,7 @@ export default class Randomizer {
     const imgDir = path.join(__dirname + '/../media/img');
     const files = await fs.readdir(imgDir);
     const n = Math.floor(Math.random() * files.length) + 1;
+    this.logger.info(`Image Selected ${n}.jpg`);
     return `${imgDir}/${n}.jpg`;
   }
 
@@ -55,7 +59,8 @@ export default class Randomizer {
       const n = Math.round(Math.random() * 5);
       seq += n;
     }
-    console.log(seq);
+
+    this.logger.info(`Generated sequence: ${seq}`);
 
     this.sequence = seq;
     this.generateAudioData();
@@ -71,6 +76,8 @@ export default class Randomizer {
       const repeatedZeroStr = '0'.repeat(repeatedZero);
       sequence += repeatedZeroStr;
     }
+
+    this.logger.info(`Setting sequence to: ${seq}`);
 
     this.sequence = sequence;
     this.generateAudioData();

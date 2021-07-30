@@ -5,6 +5,10 @@ export interface audioData {
   counts?: number;
 }
 
+export interface TwitterTweetResponse {
+  id: number;
+  id_str: string;
+}
 export interface twitterUploadResponse {
   media_id: number;
   media_id_string: string;

@@ -1,3 +1,4 @@
+import createLogger from 'logging';
 import { audioData } from '../types/interface';
 import ffmpeg from 'fluent-ffmpeg';
 import path from 'path';
@@ -9,10 +10,12 @@ export default class VideoMaker {
   public videoOutput: string;
   public fullPath: string;
   public audioLength: number;
+  private logger: createLogger.Logger;
   command: ffmpeg.FfmpegCommand;
 
   public constructor(img: string, audioList: audioData[]) {
     this.command = ffmpeg();
+    this.logger = createLogger('VideoMaker');
     this.imagePath = img;
     this.audioList = audioList;
     this.audioOutput = './output.ogg';
@@ -44,8 +47,8 @@ export default class VideoMaker {
         .input(inputAudio)
         .save(this.audioOutput)
         .on('end', async () => {
-          console.log('done creating audio');
           this.audioLength = await this.getAudioLength();
+          this.logger.info(`Audio Generated, length: ${this.audioLength}`);
           resolve();
         });
     });
@@ -66,7 +69,7 @@ export default class VideoMaker {
         ])
         .save(this.videoOutput)
         .on('end', () => {
-          console.log('video created');
+          this.logger.info('Video Created');
           resolve(this.videoOutput);
         });
     });

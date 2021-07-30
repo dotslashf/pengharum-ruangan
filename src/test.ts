@@ -10,7 +10,7 @@ import VideoMaker from './lib/VideoMaker';
 
   const f = new Formatter(audioData);
   const tweet = f.finalText;
-  console.log(tweet);
+  console.log(tweet.length);
 
   const vm = new VideoMaker(generatedImgSrc, audioData);
   await vm.generateAudio();
