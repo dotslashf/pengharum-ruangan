@@ -1,45 +1,56 @@
 [
  {
+   "index": 0,
    "text": "psh",
    "audioPath": "media/sound/psh.ogg"
  },
  {
+   "index": 1,
    "text": "pshhh",
    "audioPath": "media/sound/pshhh.ogg"
  },
  {
+   "index": 2,
    "text": "psshh",
    "audioPath": "media/sound/psshh.ogg"
  },
  {
+   "index": 3,
    "text": "pssshh",
    "audioPath": "media/sound/pssshh.ogg"
  },
  {
+   "index": 4,
    "text": "pssssh",
    "audioPath": "media/sound/pssssh.ogg"
  },
  {
+   "index": 5,
    "text": "psssssh",
    "audioPath": "media/sound/psssssh.ogg"
  },
  {
+   "index": 6,
    "text": "shake",
    "audioPath": "media/sound/shake.ogg"
  },
  {
+   "index": 7,
    "text": "shakeshake",
    "audioPath": "media/sound/shakeshake.ogg"
  },
  {
+   "index": 8,
    "text": "shshsh",
    "audioPath": "media/sound/shshsh.ogg"
  },
  {
+   "index": 9,
    "text": "sssh",
    "audioPath": "media/sound/sssh.ogg"
  },
  {
+   "index": 10,
    "text": "ssss",
    "audioPath": "media/sound/ssss.ogg"
  }

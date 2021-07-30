@@ -1,4 +1,5 @@
 export interface audioData {
+  index?: number;
   text: string;
   audioPath?: string;
   counts?: number;

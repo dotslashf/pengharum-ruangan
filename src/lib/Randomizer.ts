@@ -5,27 +5,23 @@ import { promises as fs } from 'fs';
 import path from 'path';
 
 export default class Randomizer {
-  public generatedAudioData: audioData[];
+  private _audioData: audioData[];
   public generatedImgSrc: Promise<string>;
-  public generatedCounts: audioData[];
-  public generatedSequence: void;
+  private sequence: string;
 
   constructor() {
-    this.generatedAudioData = this.generateTextAudio();
     this.generatedImgSrc = this.generateImage();
-    this.generatedSequence = this.generateSequence();
+    this.generateRandomSequence();
   }
 
-  private generateTextAudio() {
-    const generatedCounts = data.map(data => {
-      const counts = Math.round(Math.random() * 5);
+  private generateAudioData() {
+    const generatedCounts = data.map((data, index) => {
+      const counts = parseInt(this.sequence.charAt(index));
       return {
         text: data.text,
         counts,
       };
     });
-
-    this.generatedCounts = generatedCounts as audioData[];
 
     const listText: audioData[] = [];
     generatedCounts.map(data => {
@@ -38,7 +34,8 @@ export default class Randomizer {
         }
       }
     });
-    return lodash.shuffle(listText);
+
+    this._audioData = lodash.shuffle(listText);
   }
 
   private async generateImage(): Promise<string> {
@@ -48,11 +45,38 @@ export default class Randomizer {
     return `${imgDir}/${n}.jpg`;
   }
 
-  private generateSequence(): void {
-    const sequence = this.generatedCounts.reduce((acc, data) => {
-      return `${acc}${data.counts}`;
-    }, '');
+  public getSequence(): string {
+    return this.sequence;
+  }
 
-    console.log(sequence, typeof sequence);
+  public generateRandomSequence(): void {
+    let seq = '';
+    for (let i = 0; i < 11; i++) {
+      const n = Math.round(Math.random() * 5);
+      seq += n;
+    }
+    console.log(seq);
+
+    this.sequence = seq;
+    this.generateAudioData();
+  }
+
+  public setSequence(seq: string): void {
+    const maxSequenceLength = 11;
+    let sequence = seq.substring(0, maxSequenceLength);
+    const sequenceLength = sequence.length;
+
+    if (sequenceLength !== 11) {
+      const repeatedZero = maxSequenceLength - sequenceLength;
+      const repeatedZeroStr = '0'.repeat(repeatedZero);
+      sequence += repeatedZeroStr;
+    }
+
+    this.sequence = sequence;
+    this.generateAudioData();
+  }
+
+  public getAudioData(): audioData[] {
+    return this._audioData;
   }
 }

@@ -5,7 +5,7 @@ import Twitter from './lib/Twitter';
 
 (async () => {
   const r = new Randomizer();
-  const generatedAudioData = r.generatedAudioData;
+  const generatedAudioData = r.audioData;
   // const generatedImgSrc = await r.generatedImgSrc;
 
   const f = new Formatter(generatedAudioData);
