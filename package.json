@@ -1,7 +1,7 @@
 {
-  "name": "air-freshner",
+  "name": "pengharum-ruangan",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "index.ts",
   "license": "MIT",
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.18",
