@@ -3,6 +3,12 @@
   "version": "1.0.0",
   "main": "index.ts",
   "license": "MIT",
+  "scripts": {
+    "start": "ts-node src/index.ts",
+    "build": "tsc --build",
+    "watch": "tsc -w",
+    "dev": "nodemon dist/index.js"
+  },
   "devDependencies": {
     "@types/fluent-ffmpeg": "^2.1.18",
     "@types/lodash": "^4.14.171",
