@@ -52,7 +52,7 @@ export default class Twitter {
             if (err) {
               this.logger.error('appendFileChunk', err);
             } else {
-              this.logger.info(`appendFileChunk n:${this.chunkNumber}`);
+              this.logger.info(`appendFileChunk n: ${this.chunkNumber}`);
 
               if (this.isUploadComplete()) {
                 const mediaId = await this.finalizeUpload(mediaIdTemp);
@@ -175,13 +175,14 @@ export default class Twitter {
 
   public async tweetVideo(
     mediaIdStr: string,
-    textAudio: string
+    textAudio: string,
+    sequence: string
   ): Promise<void> {
     return new Promise(async (resolve, reject) => {
       this.client.post(
         'statuses/update',
         { status: textAudio, media_ids: [mediaIdStr] },
-        (err, data) => {
+        async (err, data) => {
           if (err) {
             this.logger.error('Tweeting Video Error', err);
             reject(err);
@@ -190,10 +191,19 @@ export default class Twitter {
             this.logger.info(
               `tweetVideo https://twitter.com/pengharunnruang/status/${_data.id_str}`
             );
+            await this.tweetSequence(_data.id_str, sequence);
             resolve();
           }
         }
       );
+    });
+  }
+
+  private async tweetSequence(tweetIdStr: string, sequence: string) {
+    await this.client.post('statuses/update', {
+      status: sequence,
+      in_reply_to_status_id: tweetIdStr,
+      auto_populate_reply_metadata: true,
     });
   }
 }

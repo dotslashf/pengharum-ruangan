@@ -7,9 +7,10 @@ import { config } from './config';
 
 (async () => {
   while (true) {
-    const r = new Randomizer('1014294');
+    const r = new Randomizer();
     const audioData = r.getAudioData();
     const generatedImgSrc = await r.generatedImgSrc;
+    const sequence = r.getSequence();
 
     const f = new Formatter(audioData);
     const tweet = f.finalText;
@@ -20,7 +21,7 @@ import { config } from './config';
 
     const twitter = new Twitter();
     const mediaId = await twitter.uploadVideo(videoPath);
-    await twitter.tweetVideo(mediaId, tweet);
+    await twitter.tweetVideo(mediaId, tweet, sequence);
 
     await sleep(config.waitingTime * 60);
   }
