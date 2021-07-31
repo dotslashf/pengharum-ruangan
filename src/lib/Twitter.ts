@@ -9,6 +9,7 @@ import { promises as fs } from 'fs';
 import { createReadStream } from 'fs';
 import createLogger from 'logging';
 import sleep from '../utils/sleep';
+import { config } from '../config';
 
 dotenv.config();
 
@@ -16,7 +17,6 @@ export default class Twitter {
   private readonly client: Twit;
   public readonly imgSrc: string;
   private logger: createLogger.Logger;
-  // private MAX_FILE_CHUNK_BYTES = 5 * 1024 * 1024;
   private isUploading: boolean = false;
   private chunkNumber: number = 0;
   private isFileStreamEnded: boolean = false;
@@ -35,7 +35,7 @@ export default class Twitter {
     const mediaIdTemp = await this.initMediaUpload(filepath);
 
     const mediaData = createReadStream(filepath, {
-      highWaterMark: 128 * 1024,
+      highWaterMark: config.chunkSizeLimit * 1024,
     });
 
     return new Promise(resolve => {

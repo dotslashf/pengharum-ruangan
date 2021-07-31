@@ -1,5 +1,6 @@
 import { audioData } from './../types/interface';
 import createLogger from 'logging';
+import { config } from '../config';
 
 export default class Formatter {
   private _data: audioData[];
@@ -46,7 +47,7 @@ export default class Formatter {
 
     const flattenTextSpray = `${flattenText}\n\n${sprayText}`;
 
-    if (flattenTextSpray.length <= 280) {
+    if (flattenTextSpray.length <= config.tweetMaxLength) {
       this.logger.info('Text Flattened + Emoji');
       return flattenTextSpray;
     } else {

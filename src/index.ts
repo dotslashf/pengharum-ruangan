@@ -3,6 +3,7 @@ import Formatter from './lib/Formatter';
 import VideoMaker from './lib/VideoMaker';
 import Twitter from './lib/Twitter';
 import sleep from './utils/sleep';
+import { config } from './config';
 
 (async () => {
   while (true) {
@@ -21,6 +22,6 @@ import sleep from './utils/sleep';
     const mediaId = await twitter.uploadVideo(videoPath);
     await twitter.tweetVideo(mediaId, tweet);
 
-    await sleep(30 * 60);
+    await sleep(config.waitingTime * 60);
   }
 })();

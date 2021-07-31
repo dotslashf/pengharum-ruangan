@@ -4,6 +4,7 @@ import lodash from 'lodash';
 import { promises as fs } from 'fs';
 import path from 'path';
 import createLogger from 'logging';
+import { config } from '../config';
 
 export default class Randomizer {
   private _audioData: audioData[];
@@ -56,7 +57,7 @@ export default class Randomizer {
   public generateRandomSequence(): void {
     let seq = '';
     for (let i = 0; i < 11; i++) {
-      const n = Math.round(Math.random() * 5);
+      const n = Math.round(Math.random() * config.sequenceNumberLimit);
       seq += n;
     }
 
