@@ -11,10 +11,10 @@ export default class Randomizer {
   private sequence: string;
   private logger: createLogger.Logger;
 
-  constructor() {
+  constructor(seq?: string) {
     this.generatedImgSrc = this.generateImage();
     this.logger = createLogger('Randomizer');
-    this.generateRandomSequence();
+    !seq ? this.generateRandomSequence() : this.setSequence(seq);
   }
 
   private generateAudioData() {
@@ -45,7 +45,7 @@ export default class Randomizer {
     const imgDir = path.join(__dirname + '/../media/img');
     const files = await fs.readdir(imgDir);
     const n = Math.floor(Math.random() * files.length) + 1;
-    this.logger.info(`Image Selected ${n}.jpg`);
+    this.logger.info(`generateImage, 🖼️: ${n}.jpg`);
     return `${imgDir}/${n}.jpg`;
   }
 
@@ -60,7 +60,7 @@ export default class Randomizer {
       seq += n;
     }
 
-    this.logger.info(`Generated sequence: ${seq}`);
+    this.logger.info(`generateRandomSequence: ${seq}`);
 
     this.sequence = seq;
     this.generateAudioData();
@@ -77,7 +77,7 @@ export default class Randomizer {
       sequence += repeatedZeroStr;
     }
 
-    this.logger.info(`Setting sequence to: ${seq}`);
+    this.logger.info(`setSequence: ${seq}`);
 
     this.sequence = sequence;
     this.generateAudioData();

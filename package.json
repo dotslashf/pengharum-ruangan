@@ -4,7 +4,7 @@
   "main": "index.ts",
   "license": "MIT",
   "scripts": {
-    "start": "ts-node src/index.ts",
+    "ts-dev": "ts-node src/index.ts",
     "build": "tsc --build",
     "watch": "tsc -w",
     "dev": "nodemon dist/index.js"

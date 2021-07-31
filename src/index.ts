@@ -6,7 +6,7 @@ import sleep from './utils/sleep';
 
 (async () => {
   while (true) {
-    const r = new Randomizer();
+    const r = new Randomizer('1014294');
     const audioData = r.getAudioData();
     const generatedImgSrc = await r.generatedImgSrc;
 
@@ -21,6 +21,6 @@ import sleep from './utils/sleep';
     const mediaId = await twitter.uploadVideo(videoPath);
     await twitter.tweetVideo(mediaId, tweet);
 
-    await sleep(30);
+    await sleep(30 * 60);
   }
 })();
